@@ -1,13 +1,13 @@
-//   This program is template code for programming small esp32 powered wifi controlled robots.
-//   https://github.com/rcmgames/RCMv2
+//   This program is for a remote control car.
+//   based on the template here: https://github.com/rcmgames/RCMv2
 //   for information see this page: https://github.com/RCMgames
 
 /**
 uncomment one of the following lines depending on which hardware you have
 Remember to also choose the "environment" for your board in PlatformIO
 */
-#define RCM_HARDWARE_VERSION RCM_ORIGINAL // versions 1, 2, 3, and 3.1 of the original RCM hardware // https://github.com/RCMgames/RCM_hardware_documentation_and_user_guide
-// #define RCM_HARDWARE_VERSION RCM_4_V1 // version 1 of the RCM 4 // https://github.com/RCMgames/RCM-Hardware-V4
+// #define RCM_HARDWARE_VERSION RCM_ORIGINAL // versions 1, 2, 3, and 3.1 of the original RCM hardware // https://github.com/RCMgames/RCM_hardware_documentation_and_user_guide
+#define RCM_HARDWARE_VERSION RCM_4_V1 // version 1 of the RCM 4 // https://github.com/RCMgames/RCM-Hardware-V4
 // #define RCM_HARDWARE_VERSION RCM_BYTE_V2 // version 2 of the RCM BYTE // https://github.com/RCMgames/RCM-Hardware-BYTE
 // #define RCM_HARDWARE_VERSION RCM_NIBBLE_V1 // version 1 of the RCM Nibble // https://github.com/RCMgames/RCM-Hardware-Nibble
 // #define RCM_HARDWARE_VERSION RCM_D1_V1 // version 1 of the RCM D1 // https://github.com/RCMgames/RCM-Hardware-D1
@@ -26,29 +26,43 @@ uncomment one of the following lines depending on which communication method you
 // See this page for information about how to set up a robot's drivetrain using the JMotor library
 // https://github.com/joshua-8/JMotor/wiki/How-to-set-up-a-drivetrain
 
+float x = 0;
+float rz = 0;
+
+#ifdef ESP8266
+JMotorDriverAvrHBridge leftMotorDriver = JMotorDriverAvrHBridge(portA);
+JMotorDriverAvrHBridge rightMotorDriver = JMotorDriverAvrHBridge(portB);
+#elif ESP32
+JMotorDriverEsp32HBridge leftMotorDriver = JMotorDriverEsp32HBridge(portA);
+JMotorDriverEsp32HBridge rightMotorDriver = JMotorDriverEsp32HBridge(portB);
+#else
+#error unsupported_board
+#endif
 
 void Enabled()
 {
     // code to run while enabled, put your main code here
-
+    leftMotorDriver.set(x - rz);
+    rightMotorDriver.set(x + rz);
 }
 
 void Enable()
 {
     // turn on outputs
-
+    leftMotorDriver.enable();
+    rightMotorDriver.enable();
 }
 
 void Disable()
 {
     // turn off outputs
-
+    leftMotorDriver.disable();
+    rightMotorDriver.disable();
 }
 
 void PowerOn()
 {
     // runs once on robot startup, set pin modes and use begin() if applicable here
-
 }
 
 void Always()
@@ -56,7 +70,7 @@ void Always()
     // always runs if void loop is running, JMotor run() functions should be put here
     // (but only the "top level", for example if you call drivetrainController.run() you shouldn't also call leftMotorController.run())
 
-    delay(1);
+    delay(10); // shorter delays bork the wifi
 }
 
 #if RCM_COMM_METHOD == RCM_COMM_EWD
@@ -64,27 +78,24 @@ void WifiDataToParse()
 {
     enabled = EWD::recvBl();
     // add data to read here: (EWD::recvBl, EWD::recvBy, EWD::recvIn, EWD::recvFl)(boolean, byte, int, float)
-
+    x = EWD::recvFl();
+    rz = EWD::recvFl();
 }
 void WifiDataToSend()
 {
     EWD::sendFl(voltageComp.getSupplyVoltage());
     // add data to send here: (EWD::sendBl(), EWD::sendBy(), EWD::sendIn(), EWD::sendFl())(boolean, byte, int, float)
-
 }
 
 void configWifi()
 {
     EWD::mode = EWD::Mode::connectToNetwork;
-    EWD::routerName = "router";
-    EWD::routerPassword = "password";
-    EWD::routerPort = 25210;
-
-    // EWD::mode = EWD::Mode::createAP;
-    // EWD::APName = "rcm0";
-    // EWD::APPassword = "rcmPassword";
-    // EWD::APPort = 25210;
+    EWD::routerName = "rccar001";
+    EWD::routerPassword = "password001";
+    EWD::routerPort = 25001;
+    EWD::communicateWithIP = "192.168.4.1";
 }
+
 #elif RCM_COMM_METHOD == RCM_COMM_ROS ////////////// ignore everything below this line unless you're using ROS mode/////////////////////////////////////////////
 void ROSWifiSettings()
 {
