@@ -7,10 +7,10 @@ uncomment one of the following lines depending on which hardware you have
 Remember to also choose the "environment" for your board in PlatformIO
 */
 // #define RCM_HARDWARE_VERSION RCM_ORIGINAL // versions 1, 2, 3, and 3.1 of the original RCM hardware // https://github.com/RCMgames/RCM_hardware_documentation_and_user_guide
-#define RCM_HARDWARE_VERSION RCM_4_V1 // version 1 of the RCM 4 // https://github.com/RCMgames/RCM-Hardware-V4
+// #define RCM_HARDWARE_VERSION RCM_4_V1 // version 1 of the RCM 4 // https://github.com/RCMgames/RCM-Hardware-V4
 // #define RCM_HARDWARE_VERSION RCM_BYTE_V2 // version 2 of the RCM BYTE // https://github.com/RCMgames/RCM-Hardware-BYTE
 // #define RCM_HARDWARE_VERSION RCM_NIBBLE_V1 // version 1 of the RCM Nibble // https://github.com/RCMgames/RCM-Hardware-Nibble
-// #define RCM_HARDWARE_VERSION RCM_D1_V1 // version 1 of the RCM D1 // https://github.com/RCMgames/RCM-Hardware-D1
+#define RCM_HARDWARE_VERSION RCM_D1_V1 // version 1 of the RCM D1 // https://github.com/RCMgames/RCM-Hardware-D1
 
 /**
 uncomment one of the following lines depending on which communication method you want to use
@@ -80,6 +80,9 @@ void WifiDataToParse()
     // add data to read here: (EWD::recvBl, EWD::recvBy, EWD::recvIn, EWD::recvFl)(boolean, byte, int, float)
     x = EWD::recvFl();
     rz = EWD::recvFl();
+    // Serial.print(x);
+    // Serial.print(",");
+    // Serial.println(rz);
 }
 void WifiDataToSend()
 {
@@ -89,11 +92,10 @@ void WifiDataToSend()
 
 void configWifi()
 {
-    EWD::mode = EWD::Mode::connectToNetwork;
-    EWD::routerName = "rccar001";
-    EWD::routerPassword = "password001";
-    EWD::routerPort = 25001;
-    EWD::communicateWithIP = "192.168.4.1";
+    EWD::mode = EWD::Mode::createAP;
+    EWD::APPort = 25001;
+    EWD::APName = "rccar001";
+    EWD::APPassword = "password001";
 }
 
 #elif RCM_COMM_METHOD == RCM_COMM_ROS ////////////// ignore everything below this line unless you're using ROS mode/////////////////////////////////////////////
