@@ -1,4 +1,5 @@
 //   This program is for a remote control car.
+//   github: https://github.com/PNW-AT/rc-car-car
 //   based on the template here: https://github.com/rcmgames/RCMv2
 //   for information see this page: https://github.com/RCMgames
 
