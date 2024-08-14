@@ -88,6 +88,7 @@ void WifiDataToParse()
 void WifiDataToSend()
 {
     EWD::sendFl(voltageComp.getSupplyVoltage());
+    // Serial.println(voltageComp.getSupplyVoltage());
     // add data to send here: (EWD::sendBl(), EWD::sendBy(), EWD::sendIn(), EWD::sendFl())(boolean, byte, int, float)
 }
 
@@ -97,6 +98,8 @@ void configWifi()
     EWD::APPort = 25001;
     EWD::APName = "rccar001";
     EWD::APPassword = "password001";
+    EWD::signalLossTimeout = 250;
+    EWD::resendTimeout = 100;
 }
 
 #elif RCM_COMM_METHOD == RCM_COMM_ROS ////////////// ignore everything below this line unless you're using ROS mode/////////////////////////////////////////////

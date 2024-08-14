@@ -68,7 +68,7 @@ void setupMotors() { }
 #define batMonitorPin A0
 
 #ifndef OVERRIDE_DEFAULT_VOLTAGE_COMP
-const int dacUnitsPerVolt = 440; // increasing this number decreases the calculated voltage
+const int dacUnitsPerVolt = 111; // increasing this number decreases the calculated voltage
 JVoltageCompMeasure<10> voltageComp = JVoltageCompMeasure<10>(batMonitorPin, dacUnitsPerVolt);
 #endif
 
