@@ -99,7 +99,7 @@ void configWifi()
     EWD::APName = "rccar001";
     EWD::APPassword = "password001";
     EWD::signalLossTimeout = 250;
-    EWD::resendTimeout = 100;
+    EWD::resendTimeout = 90;
 }
 
 #elif RCM_COMM_METHOD == RCM_COMM_ROS ////////////// ignore everything below this line unless you're using ROS mode/////////////////////////////////////////////

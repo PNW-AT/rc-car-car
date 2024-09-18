@@ -9,6 +9,9 @@ https://github.com/PNW-AT/rc-car-controller
 https://github.com/RCMgames/RCM-hardware-D1
 
 
+## schematics
+https://github.com/PNW-AT/rc-car-car/discussions/categories/general
+
 ## Acknowledgements 
 
 This software uses the [RCMv2](https://github.com/rcmgames/RCMv2) template by RCMGames which is shared under the MIT license.
